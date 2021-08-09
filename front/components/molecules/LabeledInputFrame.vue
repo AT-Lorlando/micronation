@@ -1,18 +1,5 @@
 <template>
   <div>
-    <div
-      v-if="label || $slots.addon"
-      class="relative flex flex-row justify-between px-3 inset-y-3"
-    >
-      <label
-        v-if="label"
-        for="input"
-        class="px-1 bg-white text-grey-dark prose-roboto"
-        ><span class="body-2">{{ label }}</span></label
-      >
-      <span class="px-1 bg-white"><slot name="add-on"></slot></span>
-    </div>
-
     <AppInputFrame
       :select="select"
       :border="border"

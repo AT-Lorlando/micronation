@@ -7,19 +7,20 @@
     <AppButton variant="contained" size="medium" icon="left"
       ><template #icon><AppHomeIcon /></template>Master</AppButton
     >
-    <LabeledInputFrame
+    <AppInputFrame
       label="Oui."
       :select="false"
       :border="true"
       :options="[{ name: 'Placeholder', value: 5 }]"
       errorMessage="P'tite erreur des familles"
-      ><template #add-on><AppHomeIcon /></template
-    ></LabeledInputFrame>
+      ><template #addon><AppHomeIcon /></template
+    ></AppInputFrame>
     <AppLink link="https://www.youtube.com/user/dirtybiology"
       >This is a link</AppLink
     >
     <AppError>This is an error</AppError>
-    <theHeader />
+    <AppCheckbox label="oui" />
+    <TheHeader />
   </div>
 </template>
 
@@ -27,18 +28,20 @@
 import AppLink from "~/components/atoms/AppLink";
 import AppError from "~/components/atoms/AppError";
 import AppButton from "~/components/atoms/AppButton.vue";
-import LabeledInputFrame from "~/components/molecules/LabeledInputFrame.vue";
+import AppInputFrame from "~/components/atoms/AppInputFrame.vue";
 import AppHomeIcon from "~/components/atoms/icons/AppHomeIcon.vue";
 import TheHeader from "~/components/organisms/TheHeader.vue";
+import AppCheckbox from "~/components/atoms/AppCheckbox.vue";
 
 export default {
   components: {
-    LabeledInputFrame,
+    AppInputFrame,
     AppLink,
     AppError,
     AppButton,
     AppHomeIcon,
     TheHeader,
+    AppCheckbox,
   },
 };
 </script>
