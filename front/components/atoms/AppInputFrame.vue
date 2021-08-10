@@ -71,7 +71,7 @@ export default {
   computed: {
     classInputFrame() {
       const inputFrameClasses = [
-        "rounded-lg border-0 px-3 pb-3 focus:outline-none flex flex-rows justify-around",
+        "rounded-lg border-0 px-3 pb-1 focus:outline-none flex flex-rows justify-around",
       ];
 
       if (!this.select) inputFrameClasses.push("placeholder-grey-base");

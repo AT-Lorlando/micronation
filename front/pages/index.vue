@@ -13,7 +13,6 @@
       :border="true"
       :options="[{ name: 'Placeholder', value: 5 }]"
       errorMessage="P'tite erreur des familles"
-      ><template #addon><AppHomeIcon /></template
     ></AppInputFrame>
     <AppLink link="https://www.youtube.com/user/dirtybiology"
       >This is a link</AppLink
