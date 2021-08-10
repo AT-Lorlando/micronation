@@ -67,11 +67,11 @@ export default {
       return this.variant === "contained";
     },
     classButton() {
-      const classNames = ["prose-roboto px-4 align-middle"];
+      const classNames = ["prose-roboto px-5 align-middle"];
 
       // Handling sizes
       if (this.size == "medium") classNames.push("rounded-lg py-2");
-      else classNames.push("rounded-md py-1");
+      else classNames.push("rounded-md py-1.5");
 
       // Handling variants
       if (this.isText) classNames.push("text-black bg-white");

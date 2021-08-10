@@ -9,7 +9,7 @@
         class="bg-primary-dark"
         >Editer le drapeau</AppButton
       >
-      <AppButton :to="{ name: 'home' }">Accueil</AppButton>
+      <AppButton :to="{ name: 'index' }">Accueil</AppButton>
       <AppButton :to="{ name: 'a-propos' }">A propos</AppButton>
     </div>
     <div v-if="loggedIn" class="flex justify-end">

@@ -22,36 +22,29 @@
     <AppStepLine :current="step" :numStep="3" />
     <div class="flex flex-row space-x-4 prose-montserrat">
       <button
-        class="
-          p-2
-          border
-          rounded
-          shadow-md
-          button
-          border-primary-base
-          hover:bg-primary-light
-        "
+        class="p-2 border rounded shadow-md button border-primary-base hover:bg-primary-light"
         @click="step--"
         :disabled="step < 2"
       >
         -
       </button>
       <button
-        class="
-          p-2
-          border
-          rounded
-          shadow-md
-          button
-          border-primary-base
-          hover:bg-primary-light
-        "
+        class="p-2 border rounded shadow-md button border-primary-base hover:bg-primary-light"
         @click="step++"
         :disabled="step > 3 - 1"
       >
         +
       </button>
     </div>
+    <AppCard variant="confirm" title="Title">
+      <template #header>Title</template>
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium
+        iste impedit minus, sapiente ipsum nihil? Non quisquam praesentium
+        fugiat pariatur, voluptatem quos nisi, tempore aspernatur veritatis
+        voluptates, dolorum nobis vel!
+      </p>
+    </AppCard>
     <TheHeader />
   </div>
 </template>
@@ -65,6 +58,7 @@ import AppHomeIcon from "~/components/atoms/icons/AppHomeIcon.vue";
 import TheHeader from "~/components/organisms/TheHeader.vue";
 import AppCheckbox from "~/components/atoms/AppCheckbox.vue";
 import AppStepLine from "~/components/molecules/AppStepLine.vue";
+import AppCard from "~/components/molecules/AppCard.vue";
 
 export default {
   components: {
@@ -76,6 +70,7 @@ export default {
     TheHeader,
     AppCheckbox,
     AppStepLine,
+    AppCard,
   },
   data() {
     return {

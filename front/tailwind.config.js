@@ -61,7 +61,7 @@ module.exports = {
             },
             ".body-2": {
               fontSize: 14,
-              lineHeihgt: "20px",
+              lineHeight: "20px",
               letterSpacing: "0.005em",
             },
             ".subtitle": {
@@ -107,7 +107,7 @@ module.exports = {
             },
             ".body-2": {
               fontSize: 14,
-              lineHeihgt: "20px",
+              lineHeight: "20px",
               letterSpacing: "0.005em",
             },
             ".subtitle": {
