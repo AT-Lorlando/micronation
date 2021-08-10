@@ -2,7 +2,7 @@
   <component
     :is="to ? 'NuxtLink' : 'button'"
     :class="classButton"
-    class="prose-roboto"
+    class="flex flex-row justify-center fitButton prose-roboto"
     :to="to"
     :href="href"
     :target="href ? '_blank' : undefined"
@@ -104,4 +104,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+/* This is done by hand which isn't a good practice considering the use of Tailwind, but I didn't find a native solution */
+.fitButton {
+  width: fit-content;
+}
+</style>
