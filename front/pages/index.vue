@@ -19,6 +19,7 @@
     >
     <AppError>This is an error</AppError>
     <AppCheckbox label="oui" />
+    <AppStep />
     <TheHeader />
   </div>
 </template>
@@ -31,6 +32,7 @@ import AppInputFrame from "~/components/atoms/AppInputFrame.vue";
 import AppHomeIcon from "~/components/atoms/icons/AppHomeIcon.vue";
 import TheHeader from "~/components/organisms/TheHeader.vue";
 import AppCheckbox from "~/components/atoms/AppCheckbox.vue";
+import AppStep from "~/components/atoms/AppStep.vue";
 
 export default {
   components: {
@@ -41,6 +43,7 @@ export default {
     AppHomeIcon,
     TheHeader,
     AppCheckbox,
+    AppStep,
   },
 };
 </script>
