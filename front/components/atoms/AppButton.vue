@@ -1,5 +1,6 @@
 <template>
-  <button
+  <component
+    :is="to ? 'NuxtLink' : 'button'"
     :class="classButton"
     class="prose-roboto"
     :to="to"
@@ -15,7 +16,7 @@
       <slot></slot>
     </span>
     <slot name="icon" v-if="icon === 'right'"></slot>
-  </button>
+  </component>
 </template>
 
 <script>

@@ -22,14 +22,30 @@
     <AppStepLine :current="step" :numStep="3" />
     <div class="flex flex-row space-x-4 prose-montserrat">
       <button
-        class="p-2 border rounded shadow-md  button border-primary-base hover:bg-primary-light"
+        class="
+          p-2
+          border
+          rounded
+          shadow-md
+          button
+          border-primary-base
+          hover:bg-primary-light
+        "
         @click="step--"
         :disabled="step < 2"
       >
         -
       </button>
       <button
-        class="p-2 border rounded shadow-md  button border-primary-base hover:bg-primary-light"
+        class="
+          p-2
+          border
+          rounded
+          shadow-md
+          button
+          border-primary-base
+          hover:bg-primary-light
+        "
         @click="step++"
         :disabled="step > 3 - 1"
       >
