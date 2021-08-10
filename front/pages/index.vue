@@ -19,7 +19,23 @@
     >
     <AppError>This is an error</AppError>
     <AppCheckbox label="oui" />
-    <AppStep />
+    <AppStepLine :current="step" :numStep="3" />
+    <div class="flex flex-row space-x-4 prose-montserrat">
+      <button
+        class="p-2 border rounded shadow-md  button border-primary-base hover:bg-primary-light"
+        @click="step--"
+        :disabled="step < 2"
+      >
+        -
+      </button>
+      <button
+        class="p-2 border rounded shadow-md  button border-primary-base hover:bg-primary-light"
+        @click="step++"
+        :disabled="step > 3 - 1"
+      >
+        +
+      </button>
+    </div>
     <TheHeader />
   </div>
 </template>
@@ -32,7 +48,7 @@ import AppInputFrame from "~/components/atoms/AppInputFrame.vue";
 import AppHomeIcon from "~/components/atoms/icons/AppHomeIcon.vue";
 import TheHeader from "~/components/organisms/TheHeader.vue";
 import AppCheckbox from "~/components/atoms/AppCheckbox.vue";
-import AppStep from "~/components/atoms/AppStep.vue";
+import AppStepLine from "~/components/molecules/AppStepLine.vue";
 
 export default {
   components: {
@@ -43,7 +59,12 @@ export default {
     AppHomeIcon,
     TheHeader,
     AppCheckbox,
-    AppStep,
+    AppStepLine,
+  },
+  data() {
+    return {
+      step: 1,
+    };
   },
 };
 </script>
