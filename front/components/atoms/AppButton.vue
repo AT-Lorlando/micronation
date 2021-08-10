@@ -83,8 +83,7 @@ export default {
 
       // Applying hover effects
       if (this.isText) classNames.push("hover:text-grey-light");
-      else if (this.isOutlined)
-        classNames.push("hover:border hover:border-grey-base hover:shadow-md");
+      else if (this.isOutlined) classNames.push(" hover:shadow-md");
       else if (this.isShaded) classNames.push("hover:bg-white hover:shadow-lg");
       else if (this.isContained)
         classNames.push("hover:text-white hover:shadow-lg");

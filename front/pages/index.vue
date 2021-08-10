@@ -36,7 +36,12 @@
         +
       </button>
     </div>
-    <AppCard variant="confirm" title="Title">
+    <AppCard
+      :open="openCard"
+      @close="openCard = false"
+      variant="confirm"
+      title="Title"
+    >
       <template #header>Title</template>
       <p>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium
@@ -45,6 +50,10 @@
         voluptates, dolorum nobis vel!
       </p>
     </AppCard>
+    <AppButton variant="shaded" @click="openCard = !openCard"
+      >Open
+      <pre> AppCard </pre>
+    </AppButton>
     <TheHeader />
   </div>
 </template>
@@ -58,7 +67,7 @@ import AppHomeIcon from "~/components/atoms/icons/AppHomeIcon.vue";
 import TheHeader from "~/components/organisms/TheHeader.vue";
 import AppCheckbox from "~/components/atoms/AppCheckbox.vue";
 import AppStepLine from "~/components/molecules/AppStepLine.vue";
-import AppCard from "~/components/molecules/AppCard.vue";
+import AppCard from "~/components/organisms/AppCard.vue";
 
 export default {
   components: {
@@ -75,6 +84,7 @@ export default {
   data() {
     return {
       step: 1,
+      openCard: false,
     };
   },
 };
