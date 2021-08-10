@@ -54,6 +54,13 @@
       >Open
       <pre> AppCard </pre>
     </AppButton>
+    <AppAlert variant="error" :open="openAlert" @close="openAlert = false"
+      >Ceci est une alerte</AppAlert
+    >
+    <AppButton variant="shaded" @click="openAlert = !openAlert"
+      >Open
+      <pre> AppAlert </pre>
+    </AppButton>
     <TheHeader />
   </div>
 </template>
@@ -68,6 +75,7 @@ import TheHeader from "~/components/organisms/TheHeader.vue";
 import AppCheckbox from "~/components/atoms/AppCheckbox.vue";
 import AppStepLine from "~/components/molecules/AppStepLine.vue";
 import AppCard from "~/components/organisms/AppCard.vue";
+import AppAlert from "~/components/organisms/AppAlert.vue";
 
 export default {
   components: {
@@ -80,11 +88,13 @@ export default {
     AppCheckbox,
     AppStepLine,
     AppCard,
+    AppAlert,
   },
   data() {
     return {
       step: 1,
       openCard: false,
+      openAlert: false,
     };
   },
 };

@@ -6,10 +6,10 @@
     <div
       class="fixed z-10 h-auto max-w-xl p-4 space-y-4 bg-white rounded-lg pointer-events-auto prose-roboto"
     >
-      <span class="flex justify-between prose-montserrat flew-row"
+      <div class="flex justify-between flew-row"
         ><h6>{{ title }}</h6>
         <AppDismissIcon class="cursor-pointer" @click="closeModal"
-      /></span>
+      /></div>
       <div class="body-1"><slot></slot></div>
       <div :class="actionBarClass">
         <AppButton
