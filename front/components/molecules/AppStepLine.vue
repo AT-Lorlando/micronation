@@ -27,7 +27,11 @@ export default {
     },
     numStep: {
       type: Number,
+<<<<<<< HEAD
       default: 3,
+=======
+      default: 2,
+>>>>>>> 5e2bcb6c5f77fa03b1749145786880d08ddc47cc
       required: true,
       validator(value) {
         return value >= 2;
