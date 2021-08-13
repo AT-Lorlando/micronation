@@ -1,7 +1,8 @@
 <template>
-  <button
+  <component
+    :is="to ? 'NuxtLink' : 'button'"
     :class="classButton"
-    class="prose-roboto"
+    class="flex flex-row justify-center fitButton prose-roboto"
     :to="to"
     :href="href"
     :target="href ? '_blank' : undefined"
@@ -15,7 +16,7 @@
       <slot></slot>
     </span>
     <slot name="icon" v-if="icon === 'right'"></slot>
-  </button>
+  </component>
 </template>
 
 <script>
@@ -66,11 +67,11 @@ export default {
       return this.variant === "contained";
     },
     classButton() {
-      const classNames = ["prose-roboto px-4 align-middle"];
+      const classNames = ["prose-roboto px-5 align-middle"];
 
       // Handling sizes
       if (this.size == "medium") classNames.push("rounded-lg py-2");
-      else classNames.push("rounded-md py-1");
+      else classNames.push("rounded-md py-1.5");
 
       // Handling variants
       if (this.isText) classNames.push("text-black bg-white");
@@ -82,8 +83,7 @@ export default {
 
       // Applying hover effects
       if (this.isText) classNames.push("hover:text-grey-light");
-      else if (this.isOutlined)
-        classNames.push("hover:border hover:border-grey-base hover:shadow-md");
+      else if (this.isOutlined) classNames.push(" hover:shadow-md");
       else if (this.isShaded) classNames.push("hover:bg-white hover:shadow-lg");
       else if (this.isContained)
         classNames.push("hover:text-white hover:shadow-lg");
@@ -104,4 +104,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+/* This is done by hand which isn't a good practice considering the use of Tailwind, but I didn't find a native solution */
+.fitButton {
+  width: fit-content;
+}
+</style>

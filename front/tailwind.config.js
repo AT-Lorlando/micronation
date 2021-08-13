@@ -37,21 +37,27 @@ module.exports = {
           css: {
             fontFamily: "Montserrat",
             h1: {
+              fontWeight: "bold",
               fontSize: 96,
             },
             h2: {
+              fontWeight: "bold",
               fontSize: 60,
             },
             h3: {
+              fontWeight: "bold",
               fontSize: 48,
             },
             h4: {
+              fontWeight: "bold",
               fontSize: 34,
             },
             h5: {
+              fontWeight: "bold",
               fontSize: 24,
             },
             h6: {
+              fontWeight: "bold",
               fontSize: 20,
             },
             ".body-1": {
@@ -61,7 +67,7 @@ module.exports = {
             },
             ".body-2": {
               fontSize: 14,
-              lineHeihgt: "20px",
+              lineHeight: "20px",
               letterSpacing: "0.005em",
             },
             ".subtitle": {
@@ -83,21 +89,27 @@ module.exports = {
           css: {
             fontFamily: "Roboto",
             h1: {
+              fontWeight: "bold",
               fontSize: 96,
             },
             h2: {
+              fontWeight: "bold",
               fontSize: 60,
             },
             h3: {
+              fontWeight: "bold",
               fontSize: 48,
             },
             h4: {
+              fontWeight: "bold",
               fontSize: 34,
             },
             h5: {
+              fontWeight: "bold",
               fontSize: 24,
             },
             h6: {
+              fontWeight: "bold",
               fontSize: 20,
             },
             ".body-1": {
@@ -107,7 +119,7 @@ module.exports = {
             },
             ".body-2": {
               fontSize: 14,
-              lineHeihgt: "20px",
+              lineHeight: "20px",
               letterSpacing: "0.005em",
             },
             ".subtitle": {

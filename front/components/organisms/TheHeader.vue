@@ -2,10 +2,14 @@
   <div class="grid w-full grid-cols-2 py-2 bg-white shadow-md px-7">
     <div class="flex flex-row items-center justify-start space-x-8">
       <AppIconHome classs="w-10 h-10" />
-      <AppButton size="medium" variant="contained" class="bg-primary-dark"
+      <AppButton
+        :to="{ name: 'edit' }"
+        size="medium"
+        variant="contained"
+        class="bg-primary-dark"
         >Editer le drapeau</AppButton
       >
-      <AppButton :to="{ name: 'home' }">Accueil</AppButton>
+      <AppButton :to="{ name: 'index' }">Accueil</AppButton>
       <AppButton :to="{ name: 'a-propos' }">A propos</AppButton>
     </div>
     <div v-if="loggedIn" class="flex justify-end">
@@ -23,9 +27,9 @@
 </template>
 
 <script>
-import AppButton from "~/components/atoms/AppButton.vue";
-import AppIconHome from "~/components/atoms/icons/AppHomeIcon.vue";
-import AppPersonIcon from "~/components/atoms/icons/AppPersonIcon.vue";
+import AppButton from "../atoms/AppButton.vue";
+import AppIconHome from "../atoms/icons/AppHomeIcon.vue";
+import AppPersonIcon from "../atoms/icons/AppPersonIcon.vue";
 
 export default {
   components: { AppIconHome, AppButton, AppPersonIcon },
