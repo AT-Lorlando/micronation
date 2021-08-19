@@ -23,11 +23,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 import AppButton from "../components/atoms/AppButton.vue";
-=======
-import AppButton from "~/components/atoms/AppButton.vue";
->>>>>>> 5e2bcb6c5f77fa03b1749145786880d08ddc47cc
 
 export default {
   props: ["error"],
