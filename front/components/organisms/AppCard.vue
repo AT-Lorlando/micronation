@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import AppButton from "~/components/atoms/AppButton.vue";
-import AppDismissIcon from "~/components/atoms/icons/AppDismissIcon.vue";
+import AppButton from "../atoms/AppButton.vue";
+import AppDismissIcon from "../atoms/icons/AppDismissIcon.vue";
 
 export default {
   name: "AppCard",

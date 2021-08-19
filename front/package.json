@@ -13,8 +13,16 @@
     "@nuxtjs/axios": "^5.13.1",
     "@tailwindcss/typography": "^0.4.1",
     "core-js": "^3.9.1",
+<<<<<<< HEAD
+    "dat-gui": "^0.5.0",
+    "nuxt": "^2.15.3",
+    "one-colorpicker": "^1.0.12",
+    "stats-js": "^1.0.1",
+    "three": "^0.131.3"
+=======
     "nuxt": "^2.15.3",
     "postcss-import": "^14.0.2"
+>>>>>>> 5e2bcb6c5f77fa03b1749145786880d08ddc47cc
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^4.0.1",

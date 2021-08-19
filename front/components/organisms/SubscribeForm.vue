@@ -30,9 +30,9 @@
 
 <script>
 import AppDismissIcon from "../atoms/icons/AppDismissIcon.vue";
-import AppInputFrame from "~/components/atoms/AppInputFrame.vue";
-import AppStepLine from "~/components/molecules/AppStepLine.vue";
-import AppButton from "~/components/atoms/AppButton.vue";
+import AppInputFrame from "../atoms/AppInputFrame.vue";
+import AppStepLine from "../molecules/AppStepLine.vue";
+import AppButton from "../atoms/AppButton.vue";
 
 export default {
   name: "SubscribeForm",

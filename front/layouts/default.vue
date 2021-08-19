@@ -1,7 +1,14 @@
 <template>
   <div>
+    <TheHeader />
     <Nuxt />
   </div>
 </template>
 
-<style scoped></style>
+<script>
+import TheHeader from "../components/organisms/TheHeader.vue";
+
+export default {
+  components: { TheHeader },
+};
+</script>

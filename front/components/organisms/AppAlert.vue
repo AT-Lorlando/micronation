@@ -28,8 +28,8 @@
 
 <script>
 import AppButton from "../atoms/AppButton.vue";
-import AppInfoIcon from "~/components/atoms/icons/AppInfoIcon.vue";
-import AppDismissIcon from "~/components/atoms/icons/AppDismissIcon.vue";
+import AppInfoIcon from "../atoms/icons/AppInfoIcon.vue";
+import AppDismissIcon from "../atoms/icons/AppDismissIcon.vue";
 
 export default {
   components: { AppButton, AppInfoIcon, AppDismissIcon },

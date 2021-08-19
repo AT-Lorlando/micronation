@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import AppButton from "~/components/atoms/AppButton.vue";
-import AppIconHome from "~/components/atoms/icons/AppHomeIcon.vue";
-import AppPersonIcon from "~/components/atoms/icons/AppPersonIcon.vue";
+import AppButton from "../atoms/AppButton.vue";
+import AppIconHome from "../atoms/icons/AppHomeIcon.vue";
+import AppPersonIcon from "../atoms/icons/AppPersonIcon.vue";
 
 export default {
   components: { AppIconHome, AppButton, AppPersonIcon },

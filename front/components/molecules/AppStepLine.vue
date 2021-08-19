@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import AppStep from "~/components/atoms/AppStep.vue";
+import AppStep from "../atoms/AppStep.vue";
 
 export default {
   name: "AppStepLine",
