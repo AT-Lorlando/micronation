@@ -12,7 +12,7 @@
         size="medium"
         variant="contained"
         class="mx-auto bg-primary-base"
-        to="/"
+        :to="{ name: 'index' }"
         >Revenir à l'acceuil</AppButton
       >
     </div>

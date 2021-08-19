@@ -1,6 +1,13 @@
 <template>
   <div
-    class="flex flex-col items-center justify-center h-screen text-center  prose-montserrat"
+    class="
+      flex flex-col
+      items-center
+      justify-center
+      h-screen
+      text-center
+      prose-montserrat
+    "
   >
     <div class="max-w-xl space-y-1">
       <h3>A propos</h3>

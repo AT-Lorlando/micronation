@@ -20,14 +20,14 @@ export default {
   props: {
     current: {
       type: Number,
-      default: 3,
+      default: 1,
       validator(value) {
         return 0 < value;
       },
     },
     numStep: {
       type: Number,
-      default: 2,
+      default: 3,
       required: true,
       validator(value) {
         return value >= 2;
