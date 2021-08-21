@@ -67,7 +67,7 @@ export default {
       return this.variant === "contained";
     },
     classButton() {
-      const classNames = ["prose-roboto px-5 align-middle"];
+      const classNames = ["prose-roboto px-5 align-middle text-center"];
 
       // Handling sizes
       if (this.size == "medium") classNames.push("rounded-lg py-2");
@@ -95,7 +95,7 @@ export default {
       return classNames.join(" ");
     },
     typoButton() {
-      return this.size == "medium" ? "body-1" : "body-2";
+      return this.size == "medium" ? " body-1" : " body-2";
     },
     typoIcon() {
       return this.isContained ? "text-grey-light" : "text-grey-dark";

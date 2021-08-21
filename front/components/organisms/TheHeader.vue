@@ -6,9 +6,10 @@
         :to="{ name: 'edit' }"
         size="medium"
         variant="contained"
-        class="bg-primary-dark"
-        >Editer le drapeau</AppButton
+        class="hidden bg-primary-dark md:block"
       >
+        Editer le drapeau
+      </AppButton>
       <AppButton :to="{ name: 'index' }">Accueil</AppButton>
       <AppButton :to="{ name: 'a-propos' }">A propos</AppButton>
     </div>
@@ -30,6 +31,7 @@
 import AppButton from "../atoms/AppButton.vue";
 import AppIconHome from "../atoms/icons/AppHomeIcon.vue";
 import AppPersonIcon from "../atoms/icons/AppPersonIcon.vue";
+import screenIs from "~/assets/screenIs";
 
 export default {
   components: { AppIconHome, AppButton, AppPersonIcon },
@@ -38,6 +40,14 @@ export default {
     loggedIn: {
       type: Boolean,
       default: false,
+    },
+  },
+  mounted() {},
+  computed: {
+    maxBreakpoint() {
+      const { theme: currentTheme } = require("@/tailwind.config.js");
+      console.log(currentTheme.extend.screens);
+      return true;
     },
   },
 };
