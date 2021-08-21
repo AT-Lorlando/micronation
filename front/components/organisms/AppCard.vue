@@ -1,15 +1,15 @@
 <template>
   <div
     v-show="open"
-    class="fixed inset-0 flex items-center justify-center w-full h-full bg-opacity-75 pointer-events-none bg-grey-light"
+    class="fixed inset-0 flex items-center justify-center w-full h-full bg-opacity-75 pointer-events-none  bg-grey-light"
   >
     <div
-      class="fixed z-10 h-auto max-w-xl p-4 space-y-4 bg-white rounded-lg pointer-events-auto prose-roboto"
+      class="fixed z-10 h-auto p-4 space-y-4 bg-white rounded-lg pointer-events-auto  prose-roboto"
     >
-      <div class="flex justify-between flew-row"
-        ><h6>{{ title }}</h6>
-        <AppDismissIcon class="cursor-pointer" @click="closeModal"
-      /></div>
+      <div class="flex justify-between flew-row">
+        <h6>{{ title }}</h6>
+        <AppDismissIcon class="cursor-pointer" @click="closeModal" />
+      </div>
       <div class="body-1"><slot></slot></div>
       <div :class="actionBarClass">
         <AppButton

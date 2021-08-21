@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col p-4 space-y-4 bg-white border rounded-md prose-roboto border-primary-base"
+    class="flex flex-col p-4 space-y-4 bg-white border rounded-md  prose-roboto border-primary-base"
   >
     <div class="flex flex-row items-center justify-between pb-2">
       <h5>Inscription</h5>
