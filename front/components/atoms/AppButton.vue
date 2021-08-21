@@ -2,7 +2,6 @@
   <component
     :is="to ? 'NuxtLink' : 'button'"
     :class="classButton"
-    class="flex flex-row justify-center fitButton prose-roboto"
     :to="to"
     :href="href"
     :target="href ? '_blank' : undefined"
@@ -15,7 +14,9 @@
     <span :class="typoButton">
       <slot></slot>
     </span>
-    <slot name="icon" v-if="icon === 'right'"></slot>
+    <span v-if="icon === 'right'" :class="typoIcon">
+      <slot name="icon"></slot>
+    </span>
   </component>
 </template>
 
@@ -67,7 +68,9 @@ export default {
       return this.variant === "contained";
     },
     classButton() {
-      const classNames = ["prose-roboto px-5 align-middle text-center"];
+      const classNames = [
+        "prose-roboto px-5 align-middle text-center h-auto cursor-pointer flex flex-row justify-center fitButton",
+      ];
 
       // Handling sizes
       if (this.size == "medium") classNames.push("rounded-lg py-2");
@@ -108,5 +111,6 @@ export default {
 /* This is done by hand which isn't a good practice considering the use of Tailwind, but I didn't find a native solution */
 .fitButton {
   width: fit-content;
+  height: fit-content;
 }
 </style>
