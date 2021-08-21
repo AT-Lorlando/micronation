@@ -63,7 +63,7 @@ export default {
     },
     AppAlertClass() {
       const AppAlertClasses = [
-        "fixed z-10 h-auto max-w-xl bg-white rounded-lg pointer-events-auto  prose-roboto divide-y divide-white border-2 w-2/5",
+        "fixed z-10 h-auto max-w-xl bg-white rounded-lg pointer-events-auto  prose-roboto divide-y divide-white border-2 w-2/5 max-w-xs sm:max-w-md md:max-w-xl",
       ];
       if (this.isInfo) AppAlertClasses.push(" border-primary-base");
       else AppAlertClasses.push(" border-negative-dark");
