@@ -56,7 +56,10 @@
       <pre> AppCard </pre>
     </AppButton>
     <AppAlert variant="error" :open="openAlert" @close="openAlert = false"
-      >Ceci est une alerte</AppAlert
+      >Ceci est une alerte Lorem ipsum dolor sit amet consectetur adipisicing
+      elit. Vitae modi aut doloremque obcaecati necessitatibus architecto
+      mollitia, impedit itaque dicta temporibus nisi accusantium sunt et
+      consequatur recusandae expedita asperiores laudantium! Numquam.</AppAlert
     >
     <AppButton variant="shaded" @click="openAlert = !openAlert"
       >Open
