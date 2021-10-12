@@ -10,7 +10,7 @@
 
 <script>
 import * as THREE from "three";
-import { OrbitControls } from "@/components/OrbitControl.js";
+import { OrbitControls } from "@/components/OrbitControl.js"; //Special Orbit control, not the one used by defaut
 
 let desired_flag_width = 500;
 
@@ -582,10 +582,10 @@ export default {
       const intersects = raycaster.intersectObjects(scene.children);
 
       if (intersects[0]?.object == object) {
-        pole.material.color.set(0xff0000);
+        // pole.material.color.set(0xff0000);
         hover = true;
       } else {
-        pole.material.color.set(0xafafff);
+        // pole.material.color.set(0xafafff);
         hover = false;
       }
 
