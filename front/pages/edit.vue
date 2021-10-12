@@ -1,76 +1,74 @@
 <template>
   <v-app>
-    <div class="w-screen h-screen bg-grey-light">
+    <div class="min-h-screen bg-grey-light">
       <div
-        class="grid h-full grid-rows-2 pt-24 space-y-8 lg:grid-cols-2 lg:space-x-8"
+        class="
+          flex flex-col
+          md:flex-row
+          max-w-screen-xl
+          h-full
+          grid-rows-2
+          mx-auto
+          pt-16
+        "
       >
         <div
           id="flagContainer"
-          class="flex flex-col justify-center w-3/4 mx-auto bg-white rounded-lg sm:mx-4 sm:w-full"
+          class="
+            flex-1 md:self-center
+            m-2 md:mx-4 md:mb-4
+            h-auto
+          "
         >
-          <canvas
-            id="flagCanva"
-            class="mx-auto border-2 rounded-md border-grey-dark"
-          />
+          <div>
+            <canvas
+              id="flagCanva"
+              class="w-full border-2 rounded-md border-grey-dark"
+            />
+          </div>
+          <div>
+            <div id="zoomContainer" class="w-full mt-4 h-1/2">
+              <canvas
+                id="zoomCanva"
+                class="border-2 rounded-md border-grey-dark"
+              />
+            </div>
+          </div>
         </div>
         <div
-          class="flex flex-col items-center px-4 py-1 mx-4 mb-auto bg-white rounded-lg "
+          class="
+            flex flex-col
+            m-2 md:mx-4 md:mb-4 md:ml-0
+            p-4
+            bg-white
+            rounded-lg
+            h-100
+            justify-between
+          "
         >
-          <div
-            class="flex flex-col items-center w-full h-full pb-4 mb-4 border-b-2 sm:flex-row justify-evenly border-grey-base"
-          >
-            <div class="flex flex-col justify-around h-96">
+            <div class="flex flex-1 m-4 justify-center">
               <AppButton
                 size="medium"
                 v-on:click="Overlay()"
-                variant="contained"
-                class="bg-primary-dark"
+                class="text-white my-auto"
+                :style="myPixelButtonStyle"
               >
-                Votre pixel: {{ x }}:{{ y }}
+                Votre pixel: {{ x + 1 }}:{{ y + 1 }}
               </AppButton>
-              <AppButton
-                size="medium"
-                v-on:click="Refresh()"
-                variant="contained"
-                class="bg-primary-dark"
-              >
-                Actualiser map
-              </AppButton>
-              <AppButton
-                size="medium"
-                v-on:click="Refresh(true)"
-                variant="contained"
-                class="bg-primary-dark"
-              >
-                Actualiser size
-              </AppButton>
+            </div>
+            <hr class="mt-4 border-grey-light">
+            <div class="flex flex-col">
+              <h1 class="m-4">Modifier la couleur de votre pixel</h1>
+              <chrome-picker style="width: 100%;height: auto" v-model="color" @input="change"></chrome-picker>
               <AppButton
                 size="medium"
                 v-on:click="Finish()"
                 variant="contained"
-                class="bg-primary-dark"
+                class="bg-primary-dark mt-4"
               >
                 Valider
               </AppButton>
             </div>
-            <div
-              class="flex flex-col items-center justify-center w-auto mx-auto sm:w-1/2 sm:mx-0"
-            >
-              <v-color-picker
-                v-model="color"
-                :swatches="swatches"
-                show-swatches
-                :elevation="5"
-                @update:color="change()"
-              ></v-color-picker>
-            </div>
-          </div>
-          <div id="zoomContainer" class="w-full h-2/6">
-            <canvas
-              id="zoomCanva"
-              class="m-auto border-2 rounded-md border-grey-dark"
-            />
-          </div>
         </div>
       </div>
       <AppAlert
@@ -79,11 +77,18 @@
         @close="closeCooldownModal"
         :open="openFailedEditModal"
         >La date de dernière modification de votre pixel est trop récente,
-        veuillez attendre
-        <!-- <vue-countdown :time="cooldownTime" v-slot="{ minutes, seconds }">
-          {{ minutes }}:{{ seconds }} </vue-countdown
-        > -->
-        avant de pouvoir changer sa couleur.</AppAlert
+        veuillez patienter ! <br />
+        Temps restant :
+        <countdown
+          :time="this.cooldownTime"
+          :interval="1000"
+          tag="span"
+          class="text-2xl font-bold"
+        >
+          <template slot-scope="props"
+            >{{ props.minutes }} : {{ props.seconds }}</template
+          ></countdown
+        ></AppAlert
       >
       <AppAlert
         v-else
@@ -93,12 +98,10 @@
       >
         <pre>{{ this.errorMessage }}</pre></AppAlert
       ><AppAlert
-        variant="error"
+        variant="info"
         @close="closeSuccessfulModal"
         :open="openSuccessEditModal"
-        >La couleur (
-        <pre>{{ this.color.hex }}</pre>
-        ) a été changée avec succès !</AppAlert
+        >La couleur a été changée avec succès !</AppAlert
       >
     </div>
   </v-app>
@@ -108,6 +111,7 @@
 import * as THREE from "three";
 import fouloscopie from "fouloscopie";
 import AppAlert from "~/components/organisms/AppAlert";
+import countdown from "@chenfengyuan/vue-countdown";
 
 class Pixel {
   constructor(x, y, color) {
@@ -122,11 +126,10 @@ class Pixel {
 }
 
 //Initialising all the var
-const ratio = 2 / 1;
-const TEST = 200;
-let xPixel = TEST;
-let yPixel = ~~(xPixel / ratio);
-let MAP_BASE = new Array(xPixel);
+let desired_flag_width = 500;
+let xPixel = desired_flag_width;
+let yPixel;
+let FLAG = new Array(xPixel);
 
 const mouse = new THREE.Vector2();
 
@@ -138,7 +141,7 @@ let zoomCanvas, zoomContext;
 let BoundingBox;
 
 //Color from the colorPicker
-let color = "#ff0000";
+let canvasPixelColor = "#ff0000";
 
 //the coords of the user's pixel
 let userXPixel = 0;
@@ -149,51 +152,31 @@ let Xoffset,
   Yoffset,
   zoom = 2;
 
-//Initalising the MAP
-// for (let i = 0; i < MAP_BASE.length; i++) {
-//   MAP_BASE[i] = new Array(yPixel);
-// }
+let lastUpdate = new Date();
+let pixelNumber = 0;
 
-// //Seting the color (here is a french flag)
-// for (let i = 0; i < MAP_BASE.length; i++) {
-//   for (let j = 0; j < MAP_BASE[0].length; j++) {
-//     if (i < MAP_BASE.length / 3) {
-//       MAP_BASE[i][j] = "#0000ff";
-//     } else if (i < MAP_BASE.length / 1.5) {
-//       MAP_BASE[i][j] = "#00ff00";
-//     } else {
-//       MAP_BASE[i][j] = "#ff0000";
-//     }
-//   }
-// }
+function set2DSizeFromPixelNumber(length) {
+  xPixel =
+    length > desired_flag_width ? desired_flag_width : length;
+  yPixel =
+    length > desired_flag_width
+      ? Math.ceil(length / desired_flag_width)
+      : 1;
+}
 
 //Draw EVERY PIXEL of the map given
 function drawFlag(MAP) {
   for (let i = 0; i < MAP.length; i++) {
-    for (let j = 0; j < MAP[0].length; j++) {
+    for (let j = 0; j < MAP[i].length; j++) {
       drawPixel(i, j, MAP[i][j]);
-    }
-  }
-}
-
-//Draw a grid, usefull for debuging but can bug
-function drawGrid() {
-  for (let i = 0; i < MAP_BASE.length; i++) {
-    for (let j = 0; j < MAP_BASE[0].length; j++) {
-      if (i % 8 == 0) {
-        MAP_BASE[i][j] = "#ff00ff";
-      }
-      if (j % 8 == 0) {
-        MAP_BASE[i][j] = "#ff00ff";
-      }
     }
   }
 }
 
 //Draw an overlay to find the user pixel on the whole flag
 function drawOverlay() {
-  for (let i = 0; i < MAP_BASE.length; i++) {
-    for (let j = 0; j < MAP_BASE[0].length; j++) {
+  for (let i = 0; i < FLAG.length; i++) {
+    for (let j = 0; j < FLAG[0].length; j++) {
       if (!(i == userXPixel && j == userYPixel)) {
         drawPixel(i, j, "#090909e0");
       }
@@ -205,13 +188,16 @@ function drawOverlay() {
 //Draw a pixel on a coord given (x,y,clr), if changetexture is set to true, change the value on the map
 //You can change the size and the context to draw, default is flag context
 function drawPixel(x, y, clr, changeTexture = false, size = 1, ctx = context) {
-  let drawSize = (WIDTH / xPixel) * size;
-  ctx.fillStyle = clr;
-  ctx.fillRect(x * drawSize, y * drawSize, drawSize + 1, drawSize + 1);
-  if (changeTexture) {
-    MAP_BASE[x][y] = clr;
+  if (ctx) {
+    let xDrawSize = (WIDTH / xPixel) * size;
+    let yDrawSize = (HEIGHT / yPixel) * size;
+    ctx.fillStyle = clr;
+    ctx.fillRect(x * xDrawSize, y * yDrawSize, xDrawSize + 1, yDrawSize + 1);
+    if (changeTexture) {
+      FLAG[x][y] = clr;
+    }
+    ctx.fillStyle = "#ffffff";
   }
-  ctx.fillStyle = "#000000";
 }
 
 //Initalising the flag canvas
@@ -219,20 +205,13 @@ function initCanvas() {
   container = document.getElementById("flagContainer");
   canvas = document.getElementById("flagCanva");
 
-  WIDTH = container.clientWidth * 0.95;
-  HEIGHT = ~~(WIDTH / 2);
-  if (HEIGHT + 8 > container.clientHeight) {
-    HEIGHT = container.clientHeight * 0.95;
-    WIDTH = HEIGHT * 2;
-  }
+  canvas.width = WIDTH = container.clientWidth;
+  canvas.height = HEIGHT = ~~(WIDTH / 2);
 
-  canvas.height = HEIGHT;
-  canvas.width = WIDTH;
   BoundingBox = canvas.getBoundingClientRect();
   context = canvas.getContext("2d");
 
-  // drawGrid()
-  drawFlag(MAP_BASE);
+  drawFlag(FLAG);
 }
 
 //Initalising the zoom canvas
@@ -264,17 +243,19 @@ function drawZoom(
     : y + Yoffset > HEIGHT
     ? (y = HEIGHT - 2 * Yoffset)
     : (y -= Yoffset);
-  zoomContext.drawImage(
-    canvas,
-    x,
-    y,
-    zoomCanvas.width / zoom,
-    zoomCanvas.height / zoom,
-    0,
-    0,
-    zoomCanvas.width,
-    zoomCanvas.height
-  );
+  if (zoomContext) {
+    zoomContext.drawImage(
+      canvas,
+      x,
+      y,
+      zoomCanvas.width / zoom,
+      zoomCanvas.height / zoom,
+      0,
+      0,
+      zoomCanvas.width,
+      zoomCanvas.height
+    );
+  }
 }
 
 //Initalising the variables to their value
@@ -284,14 +265,13 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
   canvas.addEventListener("pointermove", onPointerMove, false);
-  canvas.addEventListener("pointerdown", onPointerDown, false);
 }
 
 //Change the color value and draw it to the user pixel
 function changeColor(newColor) {
-  console.log("Pixel draw informations :", [newColor, userXPixel, userYPixel]);
+  // console.log("Pixel draw informations :", [newColor, userXPixel, userYPixel]);
+  canvasPixelColor = newColor;
   drawPixel(userXPixel, userYPixel, newColor, true);
-  color = newColor;
   drawZoom();
 }
 
@@ -309,34 +289,35 @@ function onWindowResize() {
   initZoom();
 }
 
-//Draw a pixel on the pointer's coords
-function onPointerDown(event) {
-  drawPixel(
-    ~~(((mouse.x + 1) * xPixel) / 2),
-    ~~(((-mouse.y + 1) * yPixel) / 2),
-    color,
-    true
-  );
-  drawZoom(~~(((mouse.x + 1) * WIDTH) / 2), ~~(((-mouse.y + 1) * HEIGHT) / 2));
-}
-
 function onPointerMove(e) {
   mouse.y = -((e.clientY - BoundingBox.top) / HEIGHT) * 2 + 1;
   mouse.x = ((e.clientX - BoundingBox.left) / WIDTH) * 2 - 1;
   drawZoom(~~(((mouse.x + 1) * WIDTH) / 2), ~~(((-mouse.y + 1) * HEIGHT) / 2));
 }
 
+function getCoordinateFromFlagIndex(i) {
+  let x = i % xPixel;
+  let y = Math.floor(i / desired_flag_width);
+  return { x, y };
+}
+
+function getFlagIndexFromCoordinates(x, y) {
+  return y * desired_flag_width + x;
+}
+
+import { Chrome } from 'vue-color';
+
 export default {
   name: "edit",
   components: {
     AppAlert,
+    countdown,
+    'chrome-picker': Chrome,
   },
   data() {
     return {
       token: undefined,
-      color: {
-        hex: "00ffff",
-      },
+      color: "#ff0000",
       maxCooldownTime: 5, // min
       lastSubmittedTime: new Date(),
       errorMessage: "",
@@ -345,30 +326,27 @@ export default {
       x: ~~(Math.random() * xPixel),
       y: ~~(Math.random() * yPixel),
       isMounted: false,
-      swatches: [
-        ["#FF0000", "#AA0000", "#550000"],
-        ["#FFFF00", "#AAAA00", "#555500"],
-        ["#00FF00", "#00AA00", "#005500"],
-        ["#00FFFF", "#00AAAA", "#005555"],
-        ["#0000FF", "#0000AA", "#000055"],
-      ],
     };
   },
   computed: {
+    myPixelButtonStyle() {
+      return {
+        backgroundColor: this.color
+      }
+    },
     cooldownTime() {
       // return in ms
-      let remaining = new Date(this.lastSubmittedTime);
-      console.log(
-        "Debug - time remaining : ",
-        1000 *
-          (this.maxCooldownTime * 60 -
-            (remaining.getMinutes() * 60 + remaining.getSeconds()))
-      );
-      return (
-        1000 *
-        (this.maxCooldownTime * 60 -
-          (remaining.getMinutes() * 60 + remaining.getSeconds()))
-      );
+      const remainingTime =
+        this.maxCooldownTime * 60000 -
+        (new Date() - new Date(this.lastSubmittedTime));
+      console.log("DEBUG - Informations : ", [
+        new Date(),
+        new Date(this.lastSubmittedTime),
+        this.maxCooldownTime,
+        new Date() - new Date(this.lastSubmittedTime),
+        remainingTime,
+      ]);
+      return remainingTime;
     },
   },
   methods: {
@@ -378,9 +356,10 @@ export default {
     closeSuccessfulModal() {
       this.openSuccessEditModal = false;
     },
-    change() {
+    change(newColorObject) {
+      this.color = newColorObject.hex;
       if (this.isMounted) {
-        changeColor(this.color.hex);
+        changeColor(this.color);
       }
     },
     Finish() {
@@ -390,7 +369,7 @@ export default {
     Overlay() {
       drawOverlay();
       setTimeout(() => {
-        drawFlag(MAP_BASE);
+        drawFlag(FLAG);
         drawZoom();
       }, 3000);
     },
@@ -398,9 +377,7 @@ export default {
       console.log("REFRESH", ack);
       console.log("Fetching the flag size");
 
-      let newX = xPixel,
-        newY = yPixel;
-      fetch(`${process.env.apiUrl}/flag`, {
+      await fetch(`${process.env.apiUrl}/flag/after/${lastUpdate.toISOString()}`, {
         method: "GET",
         crossDomain: true,
         headers: {
@@ -409,50 +386,21 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          newX = data.length;
-          console.log("DEBUG - size of flag : ", newX);
-          newY = ~~(newX / ratio);
+          for (const modifiedPixel of data) {
+            const { x, y } = getCoordinateFromFlagIndex(
+              modifiedPixel.indexInFlag
+            );
+            if (!FLAG[x][y]) {
+              pixelNumber++;
+            }
+            FLAG[x][y] = modifiedPixel.hexColor;
+          }
+          lastUpdate = new Date();
+          set2DSizeFromPixelNumber(pixelNumber);
+          initCanvas();
+          initZoom();
         })
         .catch((err) => console.log(err));
-      //for test, remove thx to back end
-      /*if (ack) {
-        newX = ~~(TEST + Math.random() * TEST);
-        newY = ~~(newX / 2);
-        console.log("New size", newX, newY);
-      }*/
-      // fetch();
-
-      if (xPixel != newX || yPixel != newY) {
-        console.log("Many users, new flag, drawing...");
-        xPixel = newX;
-        yPixel = newY;
-        MAP_BASE = await this.FetchMap();
-        initCanvas();
-        initZoom();
-      } else {
-        //Fetch only new pixels
-        this.FetchPixels().forEach((pixel) => {
-          pixel.draw();
-        });
-      }
-
-      drawZoom();
-    },
-    FetchPixels() {
-      console.log("Fetching the new pixel");
-      // TOFIX : how to fetch the new pixels from a back purpose ? We can only use the /flag endpoint to get all the pixels, not just the recent one
-      // One way : fetching all the pixels and looking out the new compared to the actual map we have, maybe using the "entityId" field
-      const NEW_PIXEL = [];
-      // for (let i = 0; i < (Math.random() * xPixel * yPixel) / 2; i++) {
-      //   NEW_PIXEL.push(
-      //     new Pixel(
-      //       ~~(Math.random() * xPixel),
-      //       ~~(Math.random() * yPixel),
-      //       "#ff00ff"
-      //     )
-      //   );
-      // }
-      return NEW_PIXEL;
     },
     async FetchMap() {
       console.log("Fetching the whole map");
@@ -466,39 +414,25 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           console.log("DEBUG - New map array : ", data);
-          xPixel = 20;
-          yPixel = ~~(xPixel / ratio);
+
+          set2DSizeFromPixelNumber(data.length);
+          pixelNumber = data.length;
           const NEW_MAP = new Array(xPixel);
           for (let i = 0; i < NEW_MAP.length; i++) {
             NEW_MAP[i] = new Array(yPixel);
           }
 
-          // data = new Array(xPixel * yPixel);
-          // for (let j = 0; j < xPixel * yPixel; j++) {
-          //   data[j] = {
-          //     // hexColor: "#" + Math.ceil(Math.random() * 16777215).toString(16),
-          //     hexColor: "#ff0000"
-          //   };
-          // }
           for (let i = 0; i < data.length; i++) {
-            let j = i % xPixel;
-            let k = ~~(i / yPixel);
-            NEW_MAP[j][k] = data[i].hexColor;
+            const { x, y } = getCoordinateFromFlagIndex(i);
+            NEW_MAP[x][y] = data[i].hexColor;
           }
-          console.log("DEBUG - New random map : ", NEW_MAP);
           return NEW_MAP;
-          /*for (let i = 0; i < NEW_MAP.length; i++) {
-            for (let j = 0; j < NEW_MAP[0].length; j++) {
-              NEW_MAP[i][j] = data[i*ypix + j].hexColor;
-
-            }
-          }*/
         })
         .catch((error) => console.log(error));
     },
     sendPixel(x, y) {
       //Sending the user pixel with coords, color, timestamp?, userID?
-      const UserPixel = new Pixel(x, y, MAP_BASE[x][y]);
+      const UserPixel = new Pixel(x, y, FLAG[x][y]);
 
       console.log("Sending: ", UserPixel);
       fetch(`${process.env.apiUrl}/pixel`, {
@@ -514,7 +448,6 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("DEBUG SA MERE LA PUTE : ", data);
           if (data.statusCode && data.statusCode != 200) {
             this.openFailedEditModal = true;
             this.errorMessage = data?.message;
@@ -532,6 +465,7 @@ export default {
               .catch((err) => console.log(err));*/
           } else {
             this.openSuccessEditModal = true;
+            this.FetchUserPixel();
             this.FetchMap();
           }
         })
@@ -551,31 +485,45 @@ export default {
         .then((data) => {
           console.log("DEBUG - User pixel : ", data);
           // field indexInFlag not in the response of the /pixel endpoint, the back-end has been contacted to discuss this issue
-          this.x = (data.indexInFlag % xPixel) - 1;
-          this.y = ~~(data.indexInFlag / yPixel);
-          this.color = {
-            hex: data.hexColor,
-          };
+          this.x = (data.indexInFlag % desired_flag_width) - 1;
+          this.y = ~~(data.indexInFlag / desired_flag_width);
+          this.color = data.hexColor;
           this.lastSubmittedTime = data.lastUpdate;
+          console.log("DEBUG - time last updated ", this.lastSubmittedTime);
           setUserPixel(this.x, this.y);
-          changeColor(this.color.hex);
+          changeColor(this.color);
         })
         .catch((error) => console.log(error));
+    },
+    async FetchCooldown() {
+      const res = await fetch(`${process.env.apiUrl}/cooldown`, {
+        method: "GET",
+        crossDomain: true,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.token,
+        },
+      });
+      const body = await res.json();
+      return body.cooldown;
     },
   },
   async mounted() {
     const instance = await fouloscopie();
-    this.token = instance.userToken;
-
-    MAP_BASE = await this.FetchMap();
+    this.token = instance.userInfo.token;
+    this.maxCooldownTime = await this.FetchCooldown();
     await this.FetchUserPixel();
+    FLAG = await this.FetchMap();
     init();
     this.isMounted = true;
+    setInterval(async () => {
+      await this.Refresh();
+    }, 30000)
   },
   async middleware({ redirect }) {
     const instance = await fouloscopie();
-    const token = instance.userToken;
-    console.log("DEBUG - userToken : ", token);
+    const token = instance.userInfo.token;
+    // console.log("DEBUG - userToken : ", token);
     if (!token) {
       redirect({ name: "index" });
     }
@@ -583,4 +531,18 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+
+.vc-chrome-saturation-wrap {
+  padding-bottom: 30% !important;
+}
+
+.vc-alpha {
+  display: none;
+}
+
+.vc-chrome-fields:last-child {
+  display: none;
+}
+</style>

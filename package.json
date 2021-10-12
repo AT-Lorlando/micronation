@@ -1,6 +1,7 @@
 {
-  "dependencies": {
-    "@chenfengyuan/vue-countdown": "^2.0.0-rc",
-    "vue": "^3.2.19"
-  }
+  "scripts": {
+    "heroku-postbuild": "cd back/ && yarn && yarn workspace flag-service build",
+    "start": "node back/flag-service/dist/main.js"
+  },
+  "dependencies": {}
 }

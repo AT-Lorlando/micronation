@@ -14,6 +14,7 @@ import { UserHasNoPixel } from './errors/UserHasNoPixel';
 import { FlagService } from './FlagService';
 import { UserAlreadyOwnAPixelError } from "./errors/UserAlreadyOwnAPixelError";
 import { CooldownTimerHasNotEndedYetError } from "./errors/CooldownTimerHasNotEndedYetError";
+import { parseISO } from 'date-fns';
 
 @Controller('')
 export class FlagController {
@@ -74,6 +75,20 @@ export class FlagController {
   async getFlagAtDate(@Param('date') requestedDate: Date) {
     try {
       const flag = await this.flagService.getFlagAtDate(requestedDate);
+      return flag;
+    } catch (e) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Get('flag/after/:date')
+  @Public()
+  async getFlagAfterDate(@Param('date') requestedDate: Date | string) {
+    try {
+      if (typeof requestedDate === 'string') {
+        requestedDate = parseISO(requestedDate);
+      }
+      const flag = await this.flagService.getFlagAfterDate(requestedDate);
       return flag;
     } catch (e) {
       throw new InternalServerErrorException();
